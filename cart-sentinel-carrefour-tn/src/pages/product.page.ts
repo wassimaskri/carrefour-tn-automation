@@ -7,10 +7,10 @@ export class ProductPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.productName = page
-      .locator('h1:visible, [data-testid*="name" i]:visible, [class*="productName" i]:visible')
-      .first();
-    this.productPrice = page.locator('[class*="price" i]:visible').first();
+    this.productName = page.locator(
+      'h1:visible, [data-testid*="name" i]:visible, [class*="productName" i]:visible',
+    );
+    this.productPrice = page.locator('[class*="price" i]:visible');
   }
 
   async expectDisplayed(): Promise<void> {
@@ -21,11 +21,13 @@ export class ProductPage extends BasePage {
 
   async expectNameVisible(): Promise<void> {
     await this.acceptConsentIfDisplayed();
-    await this.waitForVisible(this.productName);
+    const visibleName = await this.waitForFirstVisibleLocator(this.productName);
+    await this.waitForVisible(visibleName);
   }
 
   async expectPriceVisible(): Promise<void> {
     await this.acceptConsentIfDisplayed();
-    await this.waitForVisible(this.productPrice);
+    const visiblePrice = await this.waitForFirstVisibleLocator(this.productPrice);
+    await this.waitForVisible(visiblePrice);
   }
 }

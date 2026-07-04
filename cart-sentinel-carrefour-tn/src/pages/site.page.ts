@@ -88,7 +88,8 @@ export class SitePage extends BasePage {
   }
 
   async openSignIn(): Promise<void> {
-    await this.click(this.signInLink);
+    const signInEntryPoint = await this.waitForFirstVisibleLocator(this.signInLink);
+    await this.click(signInEntryPoint);
   }
 
   async expectSignInDisplayed(): Promise<void> {

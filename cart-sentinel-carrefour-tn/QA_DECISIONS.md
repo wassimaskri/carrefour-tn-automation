@@ -26,6 +26,25 @@ The goal was not to automate every page. The goal was to protect the main custom
 
 This gives a realistic balance between business value and automation cost.
 
+## Wassim's Business-First QA Mindset
+
+My idea for this project was simple: before automating Carrefour TN, I needed to understand Carrefour TN as a business flow.
+
+I did not start by asking "which selector can I click?". I started by asking:
+
+- how does a customer discover a product?
+- what information helps the customer decide?
+- where can the conversion path break?
+- what happens when the expected product is not found?
+- what happens when the cart cannot persist the selected item?
+- how does the same journey behave on mobile?
+
+Only after that functional reading did I automate.
+
+This is the mindset I wanted to show: a senior QA does not automate screens blindly. A senior QA verifies the business behavior first, challenges the product risk, documents what is unstable, then turns the important checks into maintainable automation.
+
+For Carrefour TN, this means the framework is not only a technical demo. It is a way to show that I can understand an e-commerce product, identify conversion risks, expose quality gaps, and build an automation layer that helps the business trust its public customer flows.
+
 ## Why Playwright + Cucumber + POM?
 
 I used Playwright because it is reliable for modern web apps and gives strong debugging tools: screenshots, video, trace and browser contexts.

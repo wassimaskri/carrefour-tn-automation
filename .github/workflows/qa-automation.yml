@@ -45,6 +45,7 @@ jobs:
           HEADLESS: "true"
           RETRY: "1"
           VIDEO: retain-on-failure
+          TRACE: retain-on-failure
 
       - name: Run mobile smoke tests
         run: npm run test:mobile
@@ -52,6 +53,7 @@ jobs:
           HEADLESS: "true"
           RETRY: "1"
           VIDEO: retain-on-failure
+          TRACE: retain-on-failure
 
       - name: Generate Allure report
         if: always()
@@ -69,3 +71,4 @@ jobs:
             cart-sentinel-carrefour-tn/reports/allure-report
             cart-sentinel-carrefour-tn/videos
             cart-sentinel-carrefour-tn/screenshots
+            cart-sentinel-carrefour-tn/traces

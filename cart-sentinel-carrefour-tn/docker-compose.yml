@@ -8,12 +8,14 @@ services:
       HEADLESS: "true"
       RETRY: "1"
       VIDEO: retain-on-failure
+      TRACE: retain-on-failure
     command: npm run test:smoke
     volumes:
       - ./reports:/app/reports
       - ./allure-results:/app/allure-results
       - ./videos:/app/videos
       - ./screenshots:/app/screenshots
+      - ./traces:/app/traces
 
   qa-mobile:
     build: .
@@ -24,9 +26,11 @@ services:
       HEADLESS: "true"
       RETRY: "1"
       VIDEO: retain-on-failure
+      TRACE: retain-on-failure
     command: npm run test:mobile
     volumes:
       - ./reports:/app/reports
       - ./allure-results:/app/allure-results
       - ./videos:/app/videos
       - ./screenshots:/app/screenshots
+      - ./traces:/app/traces

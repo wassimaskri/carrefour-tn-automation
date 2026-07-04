@@ -11,6 +11,8 @@ screenshots/*
 !screenshots/.gitkeep
 videos/*
 !videos/.gitkeep
+traces/*
+!traces/.gitkeep
 test-results/
 playwright-report/
 .env.local

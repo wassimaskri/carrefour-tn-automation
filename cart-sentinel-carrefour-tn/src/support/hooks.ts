@@ -5,11 +5,20 @@ import {
   Status,
   type ITestCaseHookParameter,
 } from '@cucumber/cucumber';
+import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { envConfig } from '../config/env.config';
 import { BrowserFactory } from '../core/browser.factory';
 import type { CartSentinelWorld } from './world';
 
 setDefaultTimeout(envConfig.stepTimeoutMs);
+
+const safeFileName = (value: string): string =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .slice(0, 80);
 
 Before(async function (this: CartSentinelWorld, scenario: ITestCaseHookParameter) {
   const featureName = scenario.gherkinDocument.feature?.name || 'Unknown feature';
@@ -23,14 +32,32 @@ Before(async function (this: CartSentinelWorld, scenario: ITestCaseHookParameter
 
   this.browser = await BrowserFactory.launch();
   this.context = await BrowserFactory.newContext(this.browser);
+
+  if (envConfig.trace !== 'off') {
+    await this.context.tracing.start({ screenshots: true, snapshots: true, sources: true });
+  }
+
   this.page = await BrowserFactory.newPage(this.context);
   this.initPages();
 });
 
 After(async function (this: CartSentinelWorld, scenario) {
-  if (scenario.result?.status === Status.FAILED && this.page) {
+  const hasFailed = scenario.result?.status === Status.FAILED;
+
+  if (hasFailed && this.page) {
     const screenshot = await this.page.screenshot({ fullPage: true });
     await this.attach(screenshot, 'image/png');
+  }
+
+  if (this.context && envConfig.trace !== 'off') {
+    if (envConfig.trace === 'on' || hasFailed) {
+      await mkdir('traces', { recursive: true });
+      const tracePath = join('traces', `${safeFileName(scenario.pickle.name)}.zip`);
+      await this.context.tracing.stop({ path: tracePath });
+      await this.attach(`Trace: ${tracePath}`, 'text/plain');
+    } else {
+      await this.context.tracing.stop();
+    }
   }
 
   await this.context?.close();

@@ -11,7 +11,8 @@ ENV BASE_URL=https://www.carrefour.tn \
     RETRY=1 \
     PARALLEL=1 \
     VIDEO=retain-on-failure \
-    SCREENSHOT=only-on-failure
+    SCREENSHOT=only-on-failure \
+    TRACE=retain-on-failure
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends openjdk-17-jre \

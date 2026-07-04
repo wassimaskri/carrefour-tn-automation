@@ -17,6 +17,7 @@ This project is intentionally focused on public customer flows. No payment test 
 - Scénarios e-commerce réalistes : home, recherche, fiche produit, panier, navigation, compte, wishlist, newsletter, footer.
 - Couverture responsive desktop + mobile via Playwright device emulation.
 - Docker pour exécuter le framework dans un environnement reproductible.
+- Approche business-first : comprendre le parcours client Carrefour avant d'automatiser.
 - Tags orientés risque : `@smoke`, `@risk`, `@negative`, `@conversion`, `@header`, `@account`, `@footer`.
 - Lecture fonctionnelle senior : risques business, contraintes site réel, comportements anonymes et signaux de conversion.
 - Screenshots, vidéos, trace et Allure report pour analyser les échecs.
@@ -96,6 +97,19 @@ This repository includes a human QA layer, not only automation code:
 - [Negative Scenarios](docs/negative-scenarios.md): automated vs planned negative coverage.
 
 The goal is to show that the framework is driven by business risk and user behavior, not by selector collection.
+
+## Wassim's QA Mindset
+
+This project follows a business-first QA approach:
+
+1. understand how Carrefour TN customers search, decide and start a cart intent;
+2. identify where the journey can break or become unclear;
+3. document functional risks and observed anomalies;
+4. automate only the checks that protect meaningful customer and business value.
+
+The out-of-the-box idea is simple: the framework is not built to prove that I can click buttons. It is built to prove that I can read an e-commerce product like a QA, challenge the risky flows, then transform that understanding into reliable automation.
+
+That is the senior QA touch of the project.
 
 ## Setup
 
@@ -184,6 +198,7 @@ After execution, Cucumber generates:
 - `reports/allure-report`
 - screenshots attached to failed scenarios and visible in Allure as failure evidence
 - videos in `videos/` when configured
+- Playwright trace archives in `traces/` when `TRACE=on` or a scenario fails with `TRACE=retain-on-failure`
 
 A portfolio-friendly static sample is included at:
 

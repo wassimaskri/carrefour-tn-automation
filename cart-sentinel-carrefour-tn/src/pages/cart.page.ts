@@ -46,9 +46,12 @@ export class CartPage extends BasePage {
 
   async expectContainsProduct(productName?: string): Promise<void> {
     if (productName) {
-      const productMatch = this.page.getByText(productName, { exact: false }).first();
+      const productMatch = await this.findFirstVisibleLocator(
+        this.page.getByText(productName, { exact: false }),
+        1000,
+      );
 
-      if (await productMatch.isVisible().catch(() => false)) {
+      if (productMatch) {
         await this.expectVisible(productMatch);
         return;
       }
