@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+.env
+reports/*
+!reports/.gitkeep
+!reports/sample-report.html
+screenshots/*
+!screenshots/.gitkeep
+videos/*
+!videos/.gitkeep
+test-results/
+playwright-report/
+.env.local
+*.log

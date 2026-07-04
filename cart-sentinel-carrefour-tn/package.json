@@ -1,0 +1,45 @@
+{
+  "name": "cart-sentinel-carrefour-tn",
+  "version": "1.0.0",
+  "description": "Senior QA automation mini-framework for Carrefour Tunisia e-commerce journeys.",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "cucumber-js --config cucumber.js",
+    "test:headed": "HEADLESS=false cucumber-js --config cucumber.js",
+    "test:smoke": "cucumber-js --config cucumber.js --tags @smoke",
+    "test:risk": "cucumber-js --config cucumber.js --tags @risk",
+    "test:navigation": "cucumber-js --config cucumber.js --tags @navigation",
+    "test:customer": "cucumber-js --config cucumber.js --tags @customer",
+    "test:content": "cucumber-js --config cucumber.js --tags @content",
+    "test:cart": "cucumber-js --config cucumber.js --tags @cart",
+    "test:search": "cucumber-js --config cucumber.js --tags @search",
+    "test:product": "cucumber-js --config cucumber.js --tags @product",
+    "report": "node scripts/report-summary.js",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "qa-automation",
+    "playwright",
+    "cucumber",
+    "typescript",
+    "ecommerce",
+    "carrefour-tunisia"
+  ],
+  "author": "Wassim Askri - QA Automation Engineer",
+  "license": "MIT",
+  "devDependencies": {
+    "@cucumber/cucumber": "^12.9.0",
+    "@eslint/js": "^9.8.0",
+    "@playwright/test": "^1.45.3",
+    "@types/node": "^20.14.12",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.8.0",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.1"
+  }
+}
