@@ -52,9 +52,11 @@ export class SearchPage extends BasePage {
   }
 
   async openFirstProduct(): Promise<void> {
+    await this.acceptConsentIfDisplayed();
     const productLink = await this.firstVisibleProductLink();
     await this.click(productLink);
     await this.page.waitForLoadState('domcontentloaded');
+    await this.acceptConsentIfDisplayed();
   }
 
   async addFirstProductToCart(): Promise<void> {

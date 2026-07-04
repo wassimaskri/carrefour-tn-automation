@@ -4,6 +4,12 @@ Mini projet de test automation e-commerce sur [Carrefour Tunisie](https://www.ca
 
 Le nom **Cart Sentinel** reflète l'objectif du framework : surveiller les parcours qui impactent directement l'expérience client et la conversion, avec un mindset QA senior.
 
+## Why Carrefour TN?
+
+I chose Carrefour Tunisia because it is a real public e-commerce website with real constraints: dynamic product lists, cookie consent, account redirection, cart availability and changing content. A demo site would be easier, but it would not show how a QA engineer deals with functional ambiguity and live-site instability.
+
+This project is intentionally focused on public customer flows. No payment test is executed and no private user data is used.
+
 ## Why This Project Stands Out
 
 - Stack moderne : Playwright, Cucumber, TypeScript, Page Object Model.
@@ -11,8 +17,8 @@ Le nom **Cart Sentinel** reflète l'objectif du framework : surveiller les parco
 - Scénarios e-commerce réalistes : home, recherche, fiche produit, panier, navigation, compte, wishlist, newsletter, footer.
 - Tags orientés risque : `@smoke`, `@risk`, `@negative`, `@conversion`, `@header`, `@account`, `@footer`.
 - Lecture fonctionnelle senior : risques business, contraintes site réel, comportements anonymes et signaux de conversion.
-- Screenshots et vidéos en cas d'échec.
-- Rapport HTML Cucumber prêt pour partage.
+- Screenshots, vidéos, trace et Allure report pour analyser les échecs.
+- GitHub Actions CI pour smoke tests, lint, typecheck et artefacts de rapport.
 - Configuration via `.env` pour exécution locale, CI ou debug headed.
 
 ## Architecture
@@ -24,9 +30,21 @@ Step definitions
    ↓
 Page Objects
    ↓
-Base Page
+Base Page / Shared selectors / Fixtures
    ↓
 Playwright APIs
+```
+
+```mermaid
+flowchart TD
+    A["Feature files (.feature)"] --> B["Step definitions"]
+    B --> C["Page Objects"]
+    C --> D["BasePage"]
+    C --> E["Shared selectors"]
+    B --> F["Fixtures / test data"]
+    D --> G["Playwright APIs"]
+    G --> H["Browser: Chromium"]
+    B --> I["Reports: Cucumber + Allure"]
 ```
 
 ```txt
@@ -66,8 +84,12 @@ cart-sentinel-carrefour-tn/
 
 This repository includes a human QA layer, not only automation code:
 
+- [QA Decisions](QA_DECISIONS.md): why Carrefour, what was automated, limits and trade-offs.
 - [QA Strategy](docs/qa-strategy.md): risk model, scope, constraints and release confidence.
 - [Exploratory Test Charter](docs/test-charter.md): personas, heuristics and product questions.
+- [Manual Test Cases](docs/manual-test-cases.md): functional test cases reviewed before automation.
+- [Bug Reports](docs/bug-reports.md): real anomalies observed while testing the live website.
+- [Negative Scenarios](docs/negative-scenarios.md): automated vs planned negative coverage.
 
 The goal is to show that the framework is driven by business risk and user behavior, not by selector collection.
 
@@ -101,6 +123,8 @@ npm run test:cart
 npm run test:search
 npm run test:product
 npm run report
+npm run allure:generate
+npm run allure:open
 npm run lint
 npm run typecheck
 ```
@@ -111,7 +135,9 @@ After execution, Cucumber generates:
 
 - `reports/cucumber-report.html`
 - `reports/cucumber-report.json`
-- screenshots attached to failed scenarios
+- `allure-results/`
+- `reports/allure-report`
+- screenshots attached to failed scenarios and visible in Allure as failure evidence
 - videos in `videos/` when configured
 
 A portfolio-friendly static sample is included at:
@@ -119,6 +145,55 @@ A portfolio-friendly static sample is included at:
 ```txt
 reports/sample-report.html
 ```
+
+## CI
+
+GitHub Actions is configured in:
+
+```txt
+.github/workflows/qa-automation.yml
+```
+
+The CI pipeline runs:
+
+- dependency installation with `npm ci`;
+- Playwright Chromium installation;
+- lint;
+- TypeScript typecheck;
+- smoke tests;
+- Allure report generation;
+- report artifact upload.
+
+## Data-Driven And Negative Testing
+
+The framework uses Cucumber scenario data and centralized fixtures for reusable technical preconditions.
+
+Covered negative or resilience checks:
+
+- non-existing product search;
+- empty newsletter submission;
+- anonymous wishlist redirection;
+- cart empty/safe state;
+- planned/manual: price filter boundaries and out-of-stock product behavior.
+
+## Flaky Handling
+
+The live website has dynamic UI behavior, so the framework includes:
+
+- centralized wait strategy in `BasePage`;
+- first visible locator selection to avoid hidden DOM elements;
+- cookie consent handling;
+- retry controlled by `.env`;
+- video and trace retained on failure;
+- screenshots attached on failure.
+
+## Limitations
+
+- No payment test executed.
+- No checkout completion.
+- Only public flows are tested.
+- No private account data is used.
+- Some cart behavior depends on session, delivery or live availability.
 
 ## Senior QA Notes
 

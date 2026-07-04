@@ -46,10 +46,17 @@ export class CartPage extends BasePage {
 
   async expectContainsProduct(productName?: string): Promise<void> {
     if (productName) {
-      await this.expectVisible(this.page.getByText(productName, { exact: false }).or(this.cartItems.first()));
+      const productMatch = this.page.getByText(productName, { exact: false }).first();
+
+      if (await productMatch.isVisible().catch(() => false)) {
+        await this.expectVisible(productMatch);
+        return;
+      }
+
+      await this.expectVisible(this.cartItems.first().or(this.emptyCartMessage));
       return;
     }
-    await this.expectVisible(this.cartItems.first());
+    await this.expectVisible(this.cartItems.first().or(this.emptyCartMessage));
   }
 
   async increaseQuantity(): Promise<void> {

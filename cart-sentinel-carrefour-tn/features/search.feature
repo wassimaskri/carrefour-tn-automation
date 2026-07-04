@@ -5,11 +5,16 @@ Feature: Product search
 
   Rule: Search must support both discovery and controlled empty-state feedback
 
-  @smoke @risk @conversion
-  Scenario: Search for an existing product
+  @smoke @risk @conversion @data-driven
+  Scenario Outline: Search for an existing product
     Given I open Carrefour Tunisia website
-    When I search for "eau"
-    Then search results related to "eau" should be displayed
+    When I search for "<product>"
+    Then search results related to "<product>" should be displayed
+
+    Examples:
+      | product  |
+      | eau      |
+      | pristine |
 
   @negative @risk
   Scenario: Search for a non-existing product

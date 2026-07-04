@@ -10,6 +10,7 @@ module.exports = {
       'summary',
       'html:reports/cucumber-report.html',
       'json:reports/cucumber-report.json',
+      'allure-cucumberjs/reporter',
     ],
     formatOptions: {
       snippetInterface: 'async-await',

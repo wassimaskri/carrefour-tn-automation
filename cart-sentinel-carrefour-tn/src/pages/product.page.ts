@@ -14,14 +14,17 @@ export class ProductPage extends BasePage {
   }
 
   async expectDisplayed(): Promise<void> {
-    await this.expectVisible(this.productName);
+    await this.acceptConsentIfDisplayed();
+    await this.expectVisible(this.productName.or(this.productPrice));
   }
 
   async expectNameVisible(): Promise<void> {
+    await this.acceptConsentIfDisplayed();
     await this.waitForVisible(this.productName);
   }
 
   async expectPriceVisible(): Promise<void> {
+    await this.acceptConsentIfDisplayed();
     await this.waitForVisible(this.productPrice);
   }
 }

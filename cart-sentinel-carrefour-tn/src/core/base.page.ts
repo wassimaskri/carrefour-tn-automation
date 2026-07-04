@@ -34,7 +34,17 @@ export abstract class BasePage {
   }
 
   async acceptConsentIfDisplayed(): Promise<void> {
-    const acceptButton = this.page.locator('button:visible:has-text("Tout accepter")').first();
+    const acceptButton = this.page
+      .locator(
+        [
+          'button:visible:has-text("Tout accepter")',
+          '[role="button"]:visible:has-text("Tout accepter")',
+          'a:visible:has-text("Tout accepter")',
+          'button:visible:has-text("Accepter")',
+          '[role="button"]:visible:has-text("Accepter")',
+        ].join(', '),
+      )
+      .first();
     await acceptButton.waitFor({ state: 'visible', timeout: 5000 }).catch(() => undefined);
 
     if (await acceptButton.isVisible().catch(() => false)) {
