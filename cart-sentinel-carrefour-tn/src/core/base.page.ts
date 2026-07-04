@@ -21,6 +21,18 @@ export abstract class BasePage {
     await expect(locator).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
   }
 
+  protected async expectVisible(locator: Locator): Promise<void> {
+    await expect(locator).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+  }
+
+  protected async expectUrl(pattern: RegExp): Promise<void> {
+    await expect(this.page).toHaveURL(pattern, { timeout: envConfig.defaultTimeoutMs });
+  }
+
+  protected async expectMinCount(locator: Locator, minimum: number): Promise<void> {
+    expect(await locator.count()).toBeGreaterThanOrEqual(minimum);
+  }
+
   async acceptConsentIfDisplayed(): Promise<void> {
     const acceptButton = this.page.locator('button:visible:has-text("Tout accepter")').first();
     await acceptButton.waitFor({ state: 'visible', timeout: 5000 }).catch(() => undefined);

@@ -38,10 +38,11 @@ cart-sentinel-carrefour-tn/
 ├── src/
 │   ├── config/
 │   ├── core/
+│   ├── fixtures/
 │   ├── pages/
+│   ├── selectors/
 │   ├── steps/
-│   ├── support/
-│   └── utils/
+│   └── support/
 ├── videos/
 ├── cucumber.js
 ├── playwright.config.ts
@@ -126,6 +127,8 @@ This project is intentionally small, but the design decisions are professional:
 - Gherkin remains business-readable.
 - Steps orchestrate behavior only.
 - Page Objects own selectors and UI interactions.
+- Shared selectors live outside Page Objects when reused across modules.
+- Test data used by technical preconditions is centralized in `fixtures`.
 - `BasePage` centralizes common Playwright actions.
 - `.env` keeps runtime behavior configurable.
 - Tags enable risk-based execution.

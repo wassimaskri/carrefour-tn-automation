@@ -1,21 +1,21 @@
-import { expect, type Locator, type Page } from '@playwright/test';
-import { envConfig } from '../config/env.config';
+import { type Locator, type Page } from '@playwright/test';
 import { BasePage } from '../core/base.page';
+import { searchInputSelector } from '../selectors/shared.selectors';
 
 export class SitePage extends BasePage {
-  readonly logo: Locator;
-  readonly menuButton: Locator;
-  readonly searchInput: Locator;
-  readonly storeLink: Locator;
-  readonly helpLink: Locator;
-  readonly signInLink: Locator;
-  readonly wishlistLink: Locator;
-  readonly cartButton: Locator;
-  readonly categoryPanel: Locator;
-  readonly newsletterInput: Locator;
-  readonly newsletterSubmit: Locator;
-  readonly newsletterValidation: Locator;
-  readonly socialLinks: Locator;
+  private readonly logo: Locator;
+  private readonly menuButton: Locator;
+  private readonly searchInput: Locator;
+  private readonly storeLink: Locator;
+  private readonly helpLink: Locator;
+  private readonly signInLink: Locator;
+  private readonly wishlistLink: Locator;
+  private readonly cartButton: Locator;
+  private readonly categoryPanel: Locator;
+  private readonly newsletterInput: Locator;
+  private readonly newsletterSubmit: Locator;
+  private readonly newsletterValidation: Locator;
+  private readonly socialLinks: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -24,9 +24,7 @@ export class SitePage extends BasePage {
       .getByRole('button', { name: /menu/i })
       .or(page.locator('button:visible:has-text("Menu"), [class*="menu" i]:visible:has-text("Menu")'))
       .first();
-    this.searchInput = page
-      .locator('input[placeholder*="Pain" i], input[placeholder*="lait" i], input[type="search"]')
-      .first();
+    this.searchInput = page.locator(searchInputSelector).first();
     this.storeLink = page.getByRole('link', { name: /nos magasins/i }).first();
     this.helpLink = page.getByRole('link', { name: /aide|faq/i }).first();
     this.signInLink = page.getByRole('link', { name: /se connecter|compte/i }).first();
@@ -50,11 +48,11 @@ export class SitePage extends BasePage {
   }
 
   async expectHeaderReady(): Promise<void> {
-    await expect(this.logo).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
-    await expect(this.menuButton).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
-    await expect(this.searchInput).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
-    await expect(this.signInLink).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
-    await expect(this.cartButton).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+    await this.expectVisible(this.logo);
+    await this.expectVisible(this.menuButton);
+    await this.expectVisible(this.searchInput);
+    await this.expectVisible(this.signInLink);
+    await this.expectVisible(this.cartButton);
   }
 
   async openCategoryMenu(): Promise<void> {
@@ -62,7 +60,7 @@ export class SitePage extends BasePage {
   }
 
   async expectCategoriesVisible(): Promise<void> {
-    await expect(this.categoryPanel.first()).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+    await this.expectVisible(this.categoryPanel.first());
   }
 
   async openStoreLocator(): Promise<void> {
@@ -70,9 +68,7 @@ export class SitePage extends BasePage {
   }
 
   async expectStoreLocatorDisplayed(): Promise<void> {
-    await expect(this.page).toHaveURL(/nos-magasins|stores|magasins/i, {
-      timeout: envConfig.defaultTimeoutMs,
-    });
+    await this.expectUrl(/nos-magasins|stores|magasins/i);
   }
 
   async openHelpCenter(): Promise<void> {
@@ -80,7 +76,7 @@ export class SitePage extends BasePage {
   }
 
   async expectHelpCenterDisplayed(): Promise<void> {
-    await expect(this.page).toHaveURL(/faq|aide/i, { timeout: envConfig.defaultTimeoutMs });
+    await this.expectUrl(/faq|aide/i);
   }
 
   async openSignIn(): Promise<void> {
@@ -88,9 +84,7 @@ export class SitePage extends BasePage {
   }
 
   async expectSignInDisplayed(): Promise<void> {
-    await expect(this.page).toHaveURL(/compte|sign|login|connexion/i, {
-      timeout: envConfig.defaultTimeoutMs,
-    });
+    await this.expectUrl(/compte|sign|login|connexion/i);
   }
 
   async openWishlist(): Promise<void> {
@@ -98,9 +92,7 @@ export class SitePage extends BasePage {
   }
 
   async expectWishlistDisplayed(): Promise<void> {
-    await expect(this.page).toHaveURL(/wishlist|mes-produits|sign-compte|compte/i, {
-      timeout: envConfig.defaultTimeoutMs,
-    });
+    await this.expectUrl(/wishlist|mes-produits|sign-compte|compte/i);
   }
 
   async submitEmptyNewsletter(): Promise<void> {
@@ -109,20 +101,16 @@ export class SitePage extends BasePage {
   }
 
   async expectNewsletterValidation(): Promise<void> {
-    await expect(this.newsletterValidation).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+    await this.expectVisible(this.newsletterValidation);
   }
 
   async expectFooterLinks(): Promise<void> {
-    await expect(this.page.getByText(/conditions générales de vente/i).first()).toBeVisible({
-      timeout: envConfig.defaultTimeoutMs,
-    });
-    await expect(this.page.getByText(/support|contactez-nous|service livraison/i).first()).toBeVisible({
-      timeout: envConfig.defaultTimeoutMs,
-    });
+    await this.expectVisible(this.page.getByText(/conditions générales de vente/i).first());
+    await this.expectVisible(this.page.getByText(/support|contactez-nous|service livraison/i).first());
   }
 
   async expectSocialLinks(): Promise<void> {
-    await expect(this.socialLinks.first()).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
-    expect(await this.socialLinks.count()).toBeGreaterThanOrEqual(3);
+    await this.expectVisible(this.socialLinks.first());
+    await this.expectMinCount(this.socialLinks, 3);
   }
 }

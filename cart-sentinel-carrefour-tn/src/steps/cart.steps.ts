@@ -1,4 +1,5 @@
 import { Given, Then, When } from '@cucumber/cucumber';
+import { testProducts } from '../fixtures/test-data';
 import type { CartSentinelWorld } from '../support/world';
 
 When('I add the first product to the cart', async function (this: CartSentinelWorld) {
@@ -13,7 +14,7 @@ Then('the cart should contain the selected product', async function (this: CartS
 
 Given('I have a product in the cart', async function (this: CartSentinelWorld) {
   await this.homePage.openHome();
-  await this.searchPage.search('eau');
+  await this.searchPage.search(testProducts.availableSearchTerm);
   this.selectedProductName = await this.searchPage.captureFirstProductName();
   await this.searchPage.addFirstProductToCart();
   await this.cartPage.openCart();

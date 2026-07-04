@@ -1,57 +1,33 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { envConfig } from '../config/env.config';
 import { BasePage } from '../core/base.page';
+import {
+  noResultPattern,
+  searchInputSelector,
+  visibleProductLinkSelector,
+  visibleProductResultSelector,
+} from '../selectors/shared.selectors';
 
 export class SearchPage extends BasePage {
-  readonly searchInput: Locator;
-  readonly resultCards: Locator;
-  readonly productLinks: Locator;
-  readonly noResultFeedback: Locator;
-  readonly addToCartButtons: Locator;
+  private readonly searchInput: Locator;
+  private readonly resultCards: Locator;
+  private readonly productLinks: Locator;
+  private readonly noResultFeedback: Locator;
+  private readonly addToCartButtons: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.searchInput = page
-      .locator(
-        [
-          'input[type="search"]',
-          'input[role="searchbox"]',
-          'input[placeholder*="Rechercher" i]',
-          'input[placeholder*="lait" i]',
-          'input[placeholder*="Pain" i]',
-          'input[aria-label*="Rechercher" i]',
-        ].join(', '),
-      )
-      .first();
-    this.resultCards = page.locator(
+    this.searchInput = page.locator(searchInputSelector).first();
+    this.resultCards = page.locator(visibleProductResultSelector);
+    this.productLinks = page.locator(visibleProductLinkSelector).filter({ hasNotText: /^$/ });
+    this.noResultFeedback = page.getByText(noResultPattern);
+    this.addToCartButtons = page.locator(
       [
-        'main a:visible[href$=".html"]:has(img)',
-        'main a:visible[href$=".html"]:has-text("Eau")',
-        'main a:visible[href$=".html"]:has-text("Lait")',
-        '[data-testid*="product" i]:visible',
-        '[class*="productFullDetail" i]:visible',
+        'button:visible[aria-label*="Ajouter" i]',
+        'button:visible[aria-label*="panier" i]',
+        'button:visible[class*="cart" i]',
       ].join(', '),
     );
-    this.productLinks = page
-      .locator(
-        [
-          'main a:visible[href$=".html"]:has(img)',
-          'main a:visible[href$=".html"]:has-text("Eau")',
-          'main a:visible[href$=".html"]:has-text("Lait")',
-        ].join(', '),
-      )
-      .filter({ hasNotText: /^$/ });
-    this.noResultFeedback = page.getByText(
-      /aucun produit|aucun résultat|ne trouvons pas|0 produits|pas de résultat/i,
-    );
-    this.addToCartButtons = page
-      .locator(
-        [
-          'button:visible[aria-label*="Ajouter" i]',
-          'button:visible[aria-label*="panier" i]',
-          'button:visible[class*="cart" i]',
-        ].join(', '),
-      );
   }
 
   async search(term: string): Promise<void> {
@@ -67,14 +43,12 @@ export class SearchPage extends BasePage {
   async expectResultsFor(term: string): Promise<void> {
     await expect(this.searchInput).toHaveValue(term, { timeout: envConfig.defaultTimeoutMs });
     const productSignal = await this.waitForFirstVisibleLocator(this.resultCards);
-    await expect(productSignal).toBeVisible({
-      timeout: envConfig.defaultTimeoutMs,
-    });
+    await this.expectVisible(productSignal);
   }
 
   async expectNoResults(): Promise<void> {
     const noResultSignal = await this.waitForFirstVisibleLocator(this.noResultFeedback);
-    await expect(noResultSignal).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+    await this.expectVisible(noResultSignal);
   }
 
   async openFirstProduct(): Promise<void> {

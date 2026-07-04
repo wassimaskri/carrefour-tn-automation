@@ -1,10 +1,9 @@
-import { expect, type Locator, type Page } from '@playwright/test';
-import { envConfig } from '../config/env.config';
+import { type Locator, type Page } from '@playwright/test';
 import { BasePage } from '../core/base.page';
 
 export class ProductPage extends BasePage {
-  readonly productName: Locator;
-  readonly productPrice: Locator;
+  private readonly productName: Locator;
+  private readonly productPrice: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -15,7 +14,7 @@ export class ProductPage extends BasePage {
   }
 
   async expectDisplayed(): Promise<void> {
-    await expect(this.productName).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+    await this.expectVisible(this.productName);
   }
 
   async expectNameVisible(): Promise<void> {

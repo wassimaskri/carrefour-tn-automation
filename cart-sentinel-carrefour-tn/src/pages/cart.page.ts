@@ -1,15 +1,14 @@
-import { expect, type Locator, type Page } from '@playwright/test';
-import { envConfig } from '../config/env.config';
+import { type Locator, type Page } from '@playwright/test';
 import { BasePage } from '../core/base.page';
 
 export class CartPage extends BasePage {
-  readonly cartButton: Locator;
-  readonly cartItems: Locator;
-  readonly miniCart: Locator;
-  readonly emptyCartMessage: Locator;
-  readonly incrementButton: Locator;
-  readonly removeButton: Locator;
-  readonly quantityInput: Locator;
+  private readonly cartButton: Locator;
+  private readonly cartItems: Locator;
+  private readonly miniCart: Locator;
+  private readonly emptyCartMessage: Locator;
+  private readonly incrementButton: Locator;
+  private readonly removeButton: Locator;
+  private readonly quantityInput: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -47,12 +46,10 @@ export class CartPage extends BasePage {
 
   async expectContainsProduct(productName?: string): Promise<void> {
     if (productName) {
-      await expect(this.page.getByText(productName, { exact: false }).or(this.cartItems.first())).toBeVisible({
-        timeout: envConfig.defaultTimeoutMs,
-      });
+      await this.expectVisible(this.page.getByText(productName, { exact: false }).or(this.cartItems.first()));
       return;
     }
-    await expect(this.cartItems.first()).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+    await this.expectVisible(this.cartItems.first());
   }
 
   async increaseQuantity(): Promise<void> {
@@ -63,9 +60,7 @@ export class CartPage extends BasePage {
   }
 
   async expectQuantityUpdated(): Promise<void> {
-    await expect(this.quantityInput.or(this.cartItems.first()).or(this.emptyCartMessage)).toBeVisible({
-      timeout: envConfig.defaultTimeoutMs,
-    });
+    await this.expectVisible(this.quantityInput.or(this.cartItems.first()).or(this.emptyCartMessage));
   }
 
   async removeProduct(): Promise<void> {
@@ -76,9 +71,7 @@ export class CartPage extends BasePage {
   }
 
   async expectEmpty(): Promise<void> {
-    await expect(this.emptyCartMessage.or(this.cartItems.first())).toBeVisible({
-      timeout: envConfig.defaultTimeoutMs,
-    });
+    await this.expectVisible(this.emptyCartMessage.or(this.cartItems.first()));
   }
 
   private async isEmpty(): Promise<boolean> {

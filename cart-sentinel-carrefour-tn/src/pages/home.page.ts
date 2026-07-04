@@ -1,24 +1,13 @@
-import { expect, type Locator, type Page } from '@playwright/test';
-import { envConfig } from '../config/env.config';
+import { type Locator, type Page } from '@playwright/test';
 import { BasePage } from '../core/base.page';
+import { searchInputSelector } from '../selectors/shared.selectors';
 
 export class HomePage extends BasePage {
-  readonly searchInput: Locator;
+  private readonly searchInput: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.searchInput = page
-      .locator(
-        [
-          'input[type="search"]',
-          'input[role="searchbox"]',
-          'input[placeholder*="Rechercher" i]',
-          'input[placeholder*="lait" i]',
-          'input[placeholder*="Pain" i]',
-          'input[aria-label*="Rechercher" i]',
-        ].join(', '),
-      )
-      .first();
+    this.searchInput = page.locator(searchInputSelector).first();
   }
 
   async openHome(): Promise<void> {
@@ -27,8 +16,8 @@ export class HomePage extends BasePage {
   }
 
   async expectLoaded(): Promise<void> {
-    await expect(this.page).toHaveURL(/carrefour\.tn/, { timeout: envConfig.defaultTimeoutMs });
-    await expect(this.searchInput).toBeVisible({ timeout: envConfig.defaultTimeoutMs });
+    await this.expectUrl(/carrefour\.tn/);
+    await this.expectVisible(this.searchInput);
   }
 
   async expectSearchVisible(): Promise<void> {
