@@ -1,11 +1,12 @@
 import { type Locator, type Page } from '@playwright/test';
 import { BasePage } from '../core/base.page';
-import { searchInputSelector } from '../selectors/shared.selectors';
+import { searchInputSelector, searchToggleSelector } from '../selectors/shared.selectors';
 
 export class SitePage extends BasePage {
   private readonly logo: Locator;
   private readonly menuButton: Locator;
   private readonly searchInput: Locator;
+  private readonly searchToggle: Locator;
   private readonly storeLink: Locator;
   private readonly helpLink: Locator;
   private readonly signInLink: Locator;
@@ -24,10 +25,13 @@ export class SitePage extends BasePage {
       .getByRole('button', { name: /menu/i })
       .or(page.locator('button:visible:has-text("Menu"), [class*="menu" i]:visible:has-text("Menu")'))
       .first();
-    this.searchInput = page.locator(searchInputSelector).first();
+    this.searchInput = page.locator(searchInputSelector);
+    this.searchToggle = page.locator(searchToggleSelector);
     this.storeLink = page.getByRole('link', { name: /nos magasins/i }).first();
     this.helpLink = page.getByRole('link', { name: /aide|faq/i }).first();
-    this.signInLink = page.getByRole('link', { name: /se connecter|compte/i }).first();
+    this.signInLink = page
+      .getByRole('link', { name: /se connecter|compte/i })
+      .or(page.locator('a[href*="compte" i], a[href*="sign" i]'));
     this.wishlistLink = page
       .getByRole('link', { name: /mes produits|wishlist/i })
       .or(page.locator('a[href*="wishlist" i]'))
@@ -48,10 +52,14 @@ export class SitePage extends BasePage {
   }
 
   async expectHeaderReady(): Promise<void> {
-    await this.expectVisible(this.logo);
+    const brandOrMenu = await this.waitForFirstVisibleLocator(this.logo.or(this.menuButton));
+    const searchEntryPoint = await this.waitForFirstVisibleLocator(this.searchInput.or(this.searchToggle));
+    const signInEntryPoint = await this.waitForFirstVisibleLocator(this.signInLink);
+
+    await this.expectVisible(brandOrMenu);
     await this.expectVisible(this.menuButton);
-    await this.expectVisible(this.searchInput);
-    await this.expectVisible(this.signInLink);
+    await this.expectVisible(searchEntryPoint);
+    await this.expectVisible(signInEntryPoint);
     await this.expectVisible(this.cartButton);
   }
 

@@ -1,4 +1,13 @@
-import { chromium, firefox, webkit, type Browser, type BrowserContext, type Page } from '@playwright/test';
+import {
+  chromium,
+  devices,
+  firefox,
+  webkit,
+  type Browser,
+  type BrowserContext,
+  type BrowserContextOptions,
+  type Page,
+} from '@playwright/test';
 import { envConfig } from '../config/env.config';
 
 export class BrowserFactory {
@@ -16,13 +25,17 @@ export class BrowserFactory {
   }
 
   static async newContext(browser: Browser): Promise<BrowserContext> {
-    return browser.newContext({
+    const contextOptions: BrowserContextOptions = {
       baseURL: envConfig.baseUrl,
-      viewport: { width: 1440, height: 900 },
       locale: 'fr-TN',
       timezoneId: 'Africa/Tunis',
       recordVideo: envConfig.video === 'off' ? undefined : { dir: 'videos/' },
-    });
+      ...(envConfig.device === 'mobile'
+        ? devices['Pixel 5']
+        : { viewport: { width: 1440, height: 900 } }),
+    };
+
+    return browser.newContext(contextOptions);
   }
 
   static async newPage(context: BrowserContext): Promise<Page> {

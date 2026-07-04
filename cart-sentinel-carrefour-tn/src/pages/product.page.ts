@@ -15,7 +15,8 @@ export class ProductPage extends BasePage {
 
   async expectDisplayed(): Promise<void> {
     await this.acceptConsentIfDisplayed();
-    await this.expectVisible(this.productName.or(this.productPrice));
+    const productSignal = await this.waitForFirstVisibleLocator(this.productName.or(this.productPrice));
+    await this.expectVisible(productSignal);
   }
 
   async expectNameVisible(): Promise<void> {

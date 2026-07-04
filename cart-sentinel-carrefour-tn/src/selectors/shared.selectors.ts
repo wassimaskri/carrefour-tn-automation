@@ -7,6 +7,15 @@ export const searchInputSelector = [
   'input[aria-label*="Rechercher" i]',
 ].join(', ');
 
+export const searchToggleSelector = [
+  'button:visible[aria-label*="search" i]',
+  'button:visible[aria-label*="rechercher" i]',
+  'button:visible[class*="search" i]',
+  '[role="button"]:visible[aria-label*="search" i]',
+  '[role="button"]:visible[aria-label*="rechercher" i]',
+  '[class*="search" i] button:visible',
+].join(', ');
+
 export const visibleProductResultSelector = [
   'main a:visible[href$=".html"]:has(img)',
   'main a:visible[href$=".html"]:has-text("Eau")',

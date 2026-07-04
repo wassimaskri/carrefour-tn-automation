@@ -20,7 +20,7 @@ export class CartPage extends BasePage {
     this.cartItems = page.locator(
       'aside[class*="miniCart" i] [class*="product" i], [class*="cart-item" i], [data-testid*="cart-item" i]',
     );
-    this.emptyCartMessage = page.getByText(/panier vide|votre panier est vide|empty cart/i).first();
+    this.emptyCartMessage = page.getByText(/panier vide|votre panier est vide|empty cart/i);
     this.incrementButton = page
       .getByRole('button', { name: /\+|augmenter|increase/i })
       .or(page.locator('button:visible:has-text("+"), button:visible[class*="plus" i]'))
@@ -53,10 +53,12 @@ export class CartPage extends BasePage {
         return;
       }
 
-      await this.expectVisible(this.cartItems.first().or(this.emptyCartMessage));
+      const cartState = await this.waitForFirstVisibleLocator(this.cartItems.or(this.emptyCartMessage));
+      await this.expectVisible(cartState);
       return;
     }
-    await this.expectVisible(this.cartItems.first().or(this.emptyCartMessage));
+    const cartState = await this.waitForFirstVisibleLocator(this.cartItems.or(this.emptyCartMessage));
+    await this.expectVisible(cartState);
   }
 
   async increaseQuantity(): Promise<void> {
@@ -67,7 +69,10 @@ export class CartPage extends BasePage {
   }
 
   async expectQuantityUpdated(): Promise<void> {
-    await this.expectVisible(this.quantityInput.or(this.cartItems.first()).or(this.emptyCartMessage));
+    const quantityState = await this.waitForFirstVisibleLocator(
+      this.quantityInput.or(this.cartItems).or(this.emptyCartMessage),
+    );
+    await this.expectVisible(quantityState);
   }
 
   async removeProduct(): Promise<void> {
@@ -78,11 +83,12 @@ export class CartPage extends BasePage {
   }
 
   async expectEmpty(): Promise<void> {
-    await this.expectVisible(this.emptyCartMessage.or(this.cartItems.first()));
+    const cartState = await this.waitForFirstVisibleLocator(this.emptyCartMessage.or(this.cartItems));
+    await this.expectVisible(cartState);
   }
 
   private async isEmpty(): Promise<boolean> {
     await this.openCart();
-    return this.emptyCartMessage.isVisible().catch(() => false);
+    return Boolean(await this.findFirstVisibleLocator(this.emptyCartMessage, 1000));
   }
 }

@@ -15,6 +15,7 @@ This project is intentionally focused on public customer flows. No payment test 
 - Stack moderne : Playwright, Cucumber, TypeScript, Page Object Model.
 - Clean Architecture lisible par QA, PO et développeurs.
 - Scénarios e-commerce réalistes : home, recherche, fiche produit, panier, navigation, compte, wishlist, newsletter, footer.
+- Couverture responsive desktop + mobile via Playwright device emulation.
 - Tags orientés risque : `@smoke`, `@risk`, `@negative`, `@conversion`, `@header`, `@account`, `@footer`.
 - Lecture fonctionnelle senior : risques business, contraintes site réel, comportements anonymes et signaux de conversion.
 - Screenshots, vidéos, trace et Allure report pour analyser les échecs.
@@ -105,6 +106,7 @@ Copy `.env.example` to `.env` if needed, then adjust:
 ```env
 BASE_URL=https://www.carrefour.tn
 BROWSER=chromium
+DEVICE=desktop
 HEADLESS=true
 DEFAULT_TIMEOUT_MS=15000
 ```
@@ -115,6 +117,8 @@ DEFAULT_TIMEOUT_MS=15000
 npm run test
 npm run test:headed
 npm run test:smoke
+npm run test:mobile
+npm run test:mobile:headed
 npm run test:risk
 npm run test:navigation
 npm run test:customer
@@ -160,9 +164,21 @@ The CI pipeline runs:
 - Playwright Chromium installation;
 - lint;
 - TypeScript typecheck;
-- smoke tests;
+- desktop smoke tests;
+- mobile smoke tests using Playwright `Pixel 5` emulation;
 - Allure report generation;
 - report artifact upload.
+
+## Mobile Coverage
+
+Mobile coverage is controlled through the `DEVICE` environment variable:
+
+```bash
+DEVICE=desktop npm run test:smoke
+DEVICE=mobile npm run test:smoke
+```
+
+The mobile profile uses Playwright device emulation with a real mobile viewport, mobile user agent and touch capabilities. The objective is not to duplicate all scenarios, but to protect the highest-risk customer journeys on a smaller screen: home, search, product details, cart intent and core navigation.
 
 ## Data-Driven And Negative Testing
 
@@ -183,6 +199,7 @@ The live website has dynamic UI behavior, so the framework includes:
 - centralized wait strategy in `BasePage`;
 - first visible locator selection to avoid hidden DOM elements;
 - cookie consent handling;
+- desktop/mobile browser context handled centrally;
 - retry controlled by `.env`;
 - video and trace retained on failure;
 - screenshots attached on failure.
@@ -202,6 +219,7 @@ This project is intentionally small, but the design decisions are professional:
 - Gherkin remains business-readable.
 - Steps orchestrate behavior only.
 - Page Objects own selectors and UI interactions.
+- Mobile and desktop share the same business-readable scenarios.
 - Shared selectors live outside Page Objects when reused across modules.
 - Test data used by technical preconditions is centralized in `fixtures`.
 - `BasePage` centralizes common Playwright actions.

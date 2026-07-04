@@ -1,13 +1,15 @@
 import { type Locator, type Page } from '@playwright/test';
 import { BasePage } from '../core/base.page';
-import { searchInputSelector } from '../selectors/shared.selectors';
+import { searchInputSelector, searchToggleSelector } from '../selectors/shared.selectors';
 
 export class HomePage extends BasePage {
   private readonly searchInput: Locator;
+  private readonly searchToggle: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.searchInput = page.locator(searchInputSelector).first();
+    this.searchInput = page.locator(searchInputSelector);
+    this.searchToggle = page.locator(searchToggleSelector);
   }
 
   async openHome(): Promise<void> {
@@ -17,10 +19,17 @@ export class HomePage extends BasePage {
 
   async expectLoaded(): Promise<void> {
     await this.expectUrl(/carrefour\.tn/);
-    await this.expectVisible(this.searchInput);
+    const searchEntryPoint = await this.waitForFirstVisibleLocator(this.searchInput.or(this.searchToggle));
+    await this.expectVisible(searchEntryPoint);
   }
 
   async expectSearchVisible(): Promise<void> {
-    await this.waitForVisible(this.searchInput);
+    if (!(await this.findFirstVisibleLocator(this.searchInput, 1000))) {
+      const searchEntryPoint = await this.waitForFirstVisibleLocator(this.searchToggle);
+      await this.click(searchEntryPoint);
+    }
+
+    const visibleSearchInput = await this.waitForFirstVisibleLocator(this.searchInput);
+    await this.waitForVisible(visibleSearchInput);
   }
 }

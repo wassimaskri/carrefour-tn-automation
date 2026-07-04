@@ -21,3 +21,4 @@ These test cases are the manual layer I would execute before automating. They ex
 | TC-015 | Filters | Price filter boundaries | Apply min/max price filters | Results update and invalid ranges are handled | Planned |
 | TC-016 | Stock | Out-of-stock product | Open unavailable product if present | Add-to-cart is disabled or clear stock message appears | Planned |
 | TC-017 | Payment | Checkout payment | Proceed to payment | Not executed in this project | Out of scope |
+| TC-018 | Mobile | Smoke customer journey on mobile viewport | Run home, search, PDP and cart intent on mobile | Core journey remains usable on a small touch screen | Automated with `DEVICE=mobile` |

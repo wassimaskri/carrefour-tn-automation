@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 type BrowserName = 'chromium' | 'firefox' | 'webkit';
+type DeviceProfile = 'desktop' | 'mobile';
 type VideoMode = 'off' | 'on' | 'retain-on-failure' | 'on-first-retry';
 type ScreenshotMode = 'off' | 'on' | 'only-on-failure';
 
@@ -19,6 +20,7 @@ const toNumber = (value: string | undefined, fallback: number): number => {
 export const envConfig = {
   baseUrl: process.env.BASE_URL || 'https://www.carrefour.tn',
   browser: (process.env.BROWSER || 'chromium') as BrowserName,
+  device: (process.env.DEVICE || 'desktop') as DeviceProfile,
   headless: toBoolean(process.env.HEADLESS, true),
   defaultTimeoutMs: toNumber(process.env.DEFAULT_TIMEOUT_MS, 15000),
   stepTimeoutMs: toNumber(process.env.STEP_TIMEOUT_MS, 45000),

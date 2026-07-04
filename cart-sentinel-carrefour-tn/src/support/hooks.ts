@@ -19,6 +19,7 @@ Before(async function (this: CartSentinelWorld, scenario: ITestCaseHookParameter
   console.log(`\n[FEATURE] ${featureName}`);
   console.log(`[SCENARIO] ${scenarioName}`);
   console.log(`[TAGS] ${tags || 'none'}\n`);
+  console.log(`[DEVICE] ${envConfig.device}\n`);
 
   this.browser = await BrowserFactory.launch();
   this.context = await BrowserFactory.newContext(this.browser);

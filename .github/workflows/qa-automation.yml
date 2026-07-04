@@ -46,6 +46,13 @@ jobs:
           RETRY: "1"
           VIDEO: retain-on-failure
 
+      - name: Run mobile smoke tests
+        run: npm run test:mobile
+        env:
+          HEADLESS: "true"
+          RETRY: "1"
+          VIDEO: retain-on-failure
+
       - name: Generate Allure report
         if: always()
         run: npm run allure:generate

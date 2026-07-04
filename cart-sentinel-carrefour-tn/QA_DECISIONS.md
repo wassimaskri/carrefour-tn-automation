@@ -46,6 +46,14 @@ Base Page / shared selectors / fixtures
 Playwright APIs
 ```
 
+## Why Add Mobile Coverage?
+
+E-commerce traffic is often mobile-heavy, and Carrefour TN has a responsive interface with different constraints on smaller screens: condensed navigation, touch interactions, smaller product cards and possible layout shifts.
+
+I added mobile coverage through a `DEVICE=mobile` runtime profile instead of duplicating feature files. This keeps the framework maintainable: the business behavior stays the same, while Playwright changes the browser context to a mobile profile.
+
+The CI runs desktop smoke and mobile smoke separately. That gives fast feedback on the most important journeys without turning the mini project into a slow full regression suite.
+
 ## Manual Testing Before Automation
 
 Before automation, I would manually validate:
@@ -97,6 +105,7 @@ The website is public and dynamic, so I avoided fragile assumptions:
 - reusable wait strategy in `BasePage`;
 - wait for first visible locator instead of first DOM match;
 - cookie consent handled centrally;
+- desktop and mobile contexts created from the same browser factory;
 - retry configurable through `.env`;
 - screenshots on failure;
 - video retained on failure;

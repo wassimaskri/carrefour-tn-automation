@@ -8,6 +8,8 @@
     "test": "cucumber-js --config cucumber.js",
     "test:headed": "HEADLESS=false cucumber-js --config cucumber.js",
     "test:smoke": "cucumber-js --config cucumber.js --tags @smoke",
+    "test:mobile": "DEVICE=mobile cucumber-js --config cucumber.js --tags @smoke",
+    "test:mobile:headed": "DEVICE=mobile HEADLESS=false cucumber-js --config cucumber.js --tags @smoke",
     "test:risk": "cucumber-js --config cucumber.js --tags @risk",
     "test:navigation": "cucumber-js --config cucumber.js --tags @navigation",
     "test:customer": "cucumber-js --config cucumber.js --tags @customer",

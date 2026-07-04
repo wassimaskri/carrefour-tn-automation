@@ -56,6 +56,19 @@ export abstract class BasePage {
     locator: Locator,
     timeoutMs = envConfig.defaultTimeoutMs,
   ): Promise<Locator> {
+    const visibleLocator = await this.findFirstVisibleLocator(locator, timeoutMs);
+
+    if (visibleLocator) {
+      return visibleLocator;
+    }
+
+    return locator.first();
+  }
+
+  protected async findFirstVisibleLocator(
+    locator: Locator,
+    timeoutMs = envConfig.defaultTimeoutMs,
+  ): Promise<Locator | undefined> {
     const deadline = Date.now() + timeoutMs;
 
     while (Date.now() < deadline) {
@@ -80,6 +93,6 @@ export abstract class BasePage {
       }
     }
 
-    return locator.first();
+    return undefined;
   }
 }
