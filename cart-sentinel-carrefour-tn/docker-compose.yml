@@ -1,0 +1,32 @@
+services:
+  qa-smoke:
+    build: .
+    environment:
+      BASE_URL: https://www.carrefour.tn
+      BROWSER: chromium
+      DEVICE: desktop
+      HEADLESS: "true"
+      RETRY: "1"
+      VIDEO: retain-on-failure
+    command: npm run test:smoke
+    volumes:
+      - ./reports:/app/reports
+      - ./allure-results:/app/allure-results
+      - ./videos:/app/videos
+      - ./screenshots:/app/screenshots
+
+  qa-mobile:
+    build: .
+    environment:
+      BASE_URL: https://www.carrefour.tn
+      BROWSER: chromium
+      DEVICE: mobile
+      HEADLESS: "true"
+      RETRY: "1"
+      VIDEO: retain-on-failure
+    command: npm run test:mobile
+    volumes:
+      - ./reports:/app/reports
+      - ./allure-results:/app/allure-results
+      - ./videos:/app/videos
+      - ./screenshots:/app/screenshots

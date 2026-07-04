@@ -16,6 +16,7 @@ This project is intentionally focused on public customer flows. No payment test 
 - Clean Architecture lisible par QA, PO et développeurs.
 - Scénarios e-commerce réalistes : home, recherche, fiche produit, panier, navigation, compte, wishlist, newsletter, footer.
 - Couverture responsive desktop + mobile via Playwright device emulation.
+- Docker pour exécuter le framework dans un environnement reproductible.
 - Tags orientés risque : `@smoke`, `@risk`, `@negative`, `@conversion`, `@header`, `@account`, `@footer`.
 - Lecture fonctionnelle senior : risques business, contraintes site réel, comportements anonymes et signaux de conversion.
 - Screenshots, vidéos, trace et Allure report pour analyser les échecs.
@@ -64,6 +65,8 @@ cart-sentinel-carrefour-tn/
 │   └── support/
 ├── videos/
 ├── cucumber.js
+├── Dockerfile
+├── docker-compose.yml
 ├── playwright.config.ts
 ├── package.json
 └── README.md
@@ -129,9 +132,47 @@ npm run test:product
 npm run report
 npm run allure:generate
 npm run allure:open
+npm run docker:build
+npm run docker:smoke
+npm run docker:mobile
+npm run docker:compose:smoke
+npm run docker:compose:mobile
 npm run lint
 npm run typecheck
 ```
+
+## Docker
+
+Docker is included to make the framework reproducible outside the local machine. The image uses the official Playwright base image, installs Java for Allure, installs project dependencies with `npm ci`, and runs tests in headless Chromium.
+
+Build the image:
+
+```bash
+npm run docker:build
+```
+
+Docker Desktop or the Docker daemon must be running before executing these commands.
+
+Run desktop smoke tests:
+
+```bash
+npm run docker:smoke
+```
+
+Run mobile smoke tests:
+
+```bash
+npm run docker:mobile
+```
+
+Run with Docker Compose and keep reports on the host machine:
+
+```bash
+npm run docker:compose:smoke
+npm run docker:compose:mobile
+```
+
+This is useful for interviews and CI discussions because it proves the automation does not depend on one developer laptop setup.
 
 ## Reporting
 
@@ -168,6 +209,8 @@ The CI pipeline runs:
 - mobile smoke tests using Playwright `Pixel 5` emulation;
 - Allure report generation;
 - report artifact upload.
+
+The Dockerfile can also be used as a portable execution layer for another CI provider when GitHub Actions is not available.
 
 ## Mobile Coverage
 

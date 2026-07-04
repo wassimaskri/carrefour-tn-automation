@@ -54,6 +54,19 @@ I added mobile coverage through a `DEVICE=mobile` runtime profile instead of dup
 
 The CI runs desktop smoke and mobile smoke separately. That gives fast feedback on the most important journeys without turning the mini project into a slow full regression suite.
 
+## Why Add Docker?
+
+I added Docker because UI automation is sensitive to local machine differences: browser versions, missing system libraries, Java for Allure, and environment variables.
+
+The Docker image gives the project a reproducible execution layer:
+
+- Playwright browsers and Linux dependencies come from the official Playwright image;
+- Java is installed for Allure report generation;
+- dependencies are installed with `npm ci`;
+- desktop and mobile smoke tests can run from the same image.
+
+This also gives a fallback if one CI provider is blocked by account limits. The same test commands can run locally, in GitHub Actions, or inside any CI service that supports Docker.
+
 ## Manual Testing Before Automation
 
 Before automation, I would manually validate:
@@ -106,6 +119,7 @@ The website is public and dynamic, so I avoided fragile assumptions:
 - wait for first visible locator instead of first DOM match;
 - cookie consent handled centrally;
 - desktop and mobile contexts created from the same browser factory;
+- Docker used as a reproducible execution environment;
 - retry configurable through `.env`;
 - screenshots on failure;
 - video retained on failure;
