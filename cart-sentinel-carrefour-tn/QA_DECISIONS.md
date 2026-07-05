@@ -26,9 +26,9 @@ The goal was not to automate every page. The goal was to protect the main custom
 
 This gives a realistic balance between business value and automation cost.
 
-## Wassim's Business-First QA Mindset
+## Wassim Test Plan - Business First
 
-My idea for this project was simple: before automating Carrefour TN, I needed to understand Carrefour TN as a business flow.
+My test plan for this project was simple: before automating Carrefour TN, I needed to understand Carrefour TN as a business flow.
 
 I did not start by asking "which selector can I click?". I started by asking:
 
@@ -41,7 +41,7 @@ I did not start by asking "which selector can I click?". I started by asking:
 
 Only after that functional reading did I automate.
 
-This is the mindset I wanted to show: a senior QA does not automate screens blindly. A senior QA verifies the business behavior first, challenges the product risk, documents what is unstable, then turns the important checks into maintainable automation.
+This is the testing approach I wanted to show: a QA should not automate screens blindly. The business behavior is verified first, product risk is challenged, unstable areas are documented, then the important checks are turned into maintainable automation.
 
 For Carrefour TN, this means the framework is not only a technical demo. It is a way to show that I can understand an e-commerce product, identify conversion risks, expose quality gaps, and build an automation layer that helps the business trust its public customer flows.
 

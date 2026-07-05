@@ -2,7 +2,7 @@
 
 Mini projet de test automation e-commerce sur [Carrefour Tunisie](https://www.carrefour.tn/), construit pour démontrer une approche QA Automation propre, maintenable et orientée risque.
 
-Le nom **Cart Sentinel** reflète l'objectif du framework : surveiller les parcours qui impactent directement l'expérience client et la conversion, avec un mindset QA senior.
+Le nom **Cart Sentinel** reflète l'objectif du framework : surveiller les parcours qui impactent directement l'expérience client et la conversion.
 
 ## Why Carrefour TN?
 
@@ -92,24 +92,25 @@ This repository includes a human QA layer, not only automation code:
 - [QA Decisions](QA_DECISIONS.md): why Carrefour, what was automated, limits and trade-offs.
 - [QA Strategy](docs/qa-strategy.md): risk model, scope, constraints and release confidence.
 - [Exploratory Test Charter](docs/test-charter.md): personas, heuristics and product questions.
+- [Wassim Test Plan](docs/test-plan-wassim.md): business-first test plan from functional review to automation.
 - [Manual Test Cases](docs/manual-test-cases.md): functional test cases reviewed before automation.
 - [Bug Reports](docs/bug-reports.md): real anomalies observed while testing the live website.
 - [Negative Scenarios](docs/negative-scenarios.md): automated vs planned negative coverage.
 
 The goal is to show that the framework is driven by business risk and user behavior, not by selector collection.
 
-## Wassim's QA Mindset
+## Wassim Test Plan
 
-This project follows a business-first QA approach:
+This project follows a business-first test plan:
 
 1. understand how Carrefour TN customers search, decide and start a cart intent;
 2. identify where the journey can break or become unclear;
 3. document functional risks and observed anomalies;
 4. automate only the checks that protect meaningful customer and business value.
 
-The out-of-the-box idea is simple: the framework is not built to prove that I can click buttons. It is built to prove that I can read an e-commerce product like a QA, challenge the risky flows, then transform that understanding into reliable automation.
+The out-of-the-box idea is simple: the framework is not built to prove that buttons can be clicked. It is built to show how an e-commerce product can be reviewed functionally, how risky flows can be challenged, and how that understanding can become reliable automation.
 
-That is the senior QA touch of the project.
+That is the quality approach behind the project.
 
 ## Setup
 
@@ -294,7 +295,7 @@ Mini projet personnel : **Cart Sentinel Carrefour TN**
 
 J'ai construit un mini-framework de test automation e-commerce autour de Carrefour Tunisie avec Playwright, Cucumber, TypeScript et Page Object Model.
 
-Objectif : montrer une architecture propre, maintenable et proche d'un contexte professionnel, avec un mindset QA orienté risque.
+Objectif : montrer une architecture propre, maintenable et proche d'un contexte professionnel, avec un plan de test orienté risque.
 
 Parcours couverts :
 
