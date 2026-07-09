@@ -84,6 +84,7 @@ cart-sentinel-carrefour-tn/
 | Navigation | Header, category menu, store locator, help center | Discoverability and support access |
 | Customer | Sign in, wishlist, newsletter validation | Account entry and CRM quality |
 | Content | Footer service links, social links | Trust, support and brand presence |
+| Strategy | QA strategy evidence, risk map, exclusions | Proves the thinking behind the automation |
 
 ## Functional QA Layer
 
@@ -145,6 +146,7 @@ npm run test:content
 npm run test:cart
 npm run test:search
 npm run test:product
+npm run test:strategy
 npm run report
 npm run allure:generate
 npm run allure:open

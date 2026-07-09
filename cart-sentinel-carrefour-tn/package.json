@@ -17,6 +17,7 @@
     "test:cart": "cucumber-js --config cucumber.js --tags @cart",
     "test:search": "cucumber-js --config cucumber.js --tags @search",
     "test:product": "cucumber-js --config cucumber.js --tags @product",
+    "test:strategy": "cucumber-js --config cucumber.js --tags @strategy",
     "report": "node scripts/report-summary.js",
     "allure:generate": "node scripts/allure-generate.js",
     "allure:open": "node scripts/allure-open.js",

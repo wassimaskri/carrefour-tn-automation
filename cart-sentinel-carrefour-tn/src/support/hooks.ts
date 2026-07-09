@@ -20,6 +20,9 @@ const safeFileName = (value: string): string =>
     .replace(/(^-|-$)/g, '')
     .slice(0, 80);
 
+const isDocumentationScenario = (scenario: ITestCaseHookParameter): boolean =>
+  scenario.pickle.tags.some((tag) => ['@documentation', '@strategy'].includes(tag.name));
+
 Before(async function (this: CartSentinelWorld, scenario: ITestCaseHookParameter) {
   const featureName = scenario.gherkinDocument.feature?.name || 'Unknown feature';
   const scenarioName = scenario.pickle.name;
@@ -28,6 +31,12 @@ Before(async function (this: CartSentinelWorld, scenario: ITestCaseHookParameter
   console.log(`\n[FEATURE] ${featureName}`);
   console.log(`[SCENARIO] ${scenarioName}`);
   console.log(`[TAGS] ${tags || 'none'}\n`);
+
+  if (isDocumentationScenario(scenario)) {
+    console.log('[DEVICE] not required for documentation evidence\n');
+    return;
+  }
+
   console.log(`[DEVICE] ${envConfig.device}\n`);
 
   this.browser = await BrowserFactory.launch();

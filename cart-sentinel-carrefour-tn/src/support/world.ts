@@ -6,6 +6,12 @@ import { ProductPage } from '../pages/product.page';
 import { SearchPage } from '../pages/search.page';
 import { SitePage } from '../pages/site.page';
 
+type StrategyEvidence = {
+  decisions: string;
+  strategy: string;
+  testPlan: string;
+};
+
 export class CartSentinelWorld extends World {
   browser!: Browser;
   context!: BrowserContext;
@@ -16,6 +22,7 @@ export class CartSentinelWorld extends World {
   cartPage!: CartPage;
   sitePage!: SitePage;
   selectedProductName?: string;
+  strategyEvidence?: StrategyEvidence;
 
   constructor(options: IWorldOptions) {
     super(options);
