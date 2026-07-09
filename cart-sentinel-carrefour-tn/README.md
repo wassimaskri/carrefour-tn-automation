@@ -91,6 +91,7 @@ This repository includes a human QA layer, not only automation code:
 
 - [QA Decisions](QA_DECISIONS.md): why Carrefour, what was automated, limits and trade-offs.
 - [QA Strategy](docs/qa-strategy.md): risk model, scope, constraints and release confidence.
+- [Wassim Test Strategy](docs/wassim-test-strategy.md): risk-based strategy inspired by reconnaissance, critical-flow focus and feature encirclement.
 - [Exploratory Test Charter](docs/test-charter.md): personas, heuristics and product questions.
 - [Wassim Test Plan](docs/test-plan-wassim.md): business-first test plan from functional review to automation.
 - [Manual Test Cases](docs/manual-test-cases.md): functional test cases reviewed before automation.
